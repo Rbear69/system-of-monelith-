@@ -1,0 +1,69 @@
+TEST WORKFLOW - Complete Testing Process
+=========================================
+
+⚡ OPTION 1: Quick Test (Instant)
+---------------------------------
+1. python quick_test.py         → Inserts 5 sample wicks
+2. python validator.py          → Validates database
+
+Expected result:
+✅ All checks pass
+✅ Shows 5 wicks in database
+✅ Sequence positions 1-5 visible
+✅ Data quality stats displayed
+
+
+⚡ OPTION 2: Live Test (5-10 min)
+---------------------------------
+1. python okx_wick_detector.py  → Start bot
+2. Wait 5-10 minutes            → Let it collect wicks
+3. Ctrl+C                       → Stop bot
+4. python validator.py          → Check results
+
+Expected result:
+✅ Database initialized message shown
+✅ Wicks detected and saved with 💾 indicator
+✅ Validator shows all wicks stored
+✅ Real market data in database
+
+
+⚡ TROUBLESHOOTING
+---------------------------------
+
+Problem: "Database file not found"
+Solution: Run okx_wick_detector.py first OR quick_test.py
+
+Problem: "No wicks stored yet"
+Solution: Wait longer for wicks to form OR run quick_test.py
+
+Problem: WebSocket error
+Solution: Check internet connection, OKX may be rate limiting
+
+Problem: "Schema mismatch"
+Solution: Delete wick_data.db and run bot again to recreate
+
+
+⚡ SUCCESS INDICATORS
+---------------------------------
+Bot running correctly:
+✅ "Database initialized" appears
+✅ "Subscribed to ETH-USDT" appears
+✅ Candles streaming (🔥 WICK or 📊 No wick)
+✅ "Saved to database" appears when wick detected
+
+Validator passing:
+✅ CHECK 1: Database file exists
+✅ CHECK 2: Table structure valid
+✅ CHECK 3: Data stored (count > 0)
+✅ CHECK 4: Recent wicks displayed
+✅ CHECK 5: Data quality good
+
+
+⚡ FILES CREATED
+---------------------------------
+wick_data.db        → SQLite database (auto-created)
+okx_wick_detector.py → Main bot
+validator.py        → Database validator
+quick_test.py       → Sample data inserter
+requirements.txt    → Dependencies
+README.txt          → Full documentation

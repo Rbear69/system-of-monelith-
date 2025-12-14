@@ -1,0 +1,4 @@
+websockets>=12.0
+
+# Note: SQLite is built into Python standard library
+# No additional database dependencies needed

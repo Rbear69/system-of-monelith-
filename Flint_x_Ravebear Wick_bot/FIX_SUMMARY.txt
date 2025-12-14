@@ -1,0 +1,97 @@
+OKX WICK DETECTOR - FIX SUMMARY
+================================
+
+WHAT WAS BROKEN:
+❌ Symbol format: "ETH-USDT" 
+❌ OKX error: "channel:candle1m,instId:ETH-USDT doesn't exist"
+❌ Spot pairs don't have reliable 1m candle data on OKX public API
+
+WHAT'S FIXED:
+✅ Symbol format: "BTC-USDT-SWAP" (default)
+✅ Uses perpetual SWAP contracts (guaranteed 1m data)
+✅ Better error handling shows valid format examples
+✅ Auto-reconnect logic improved
+✅ Absolute database path (no more "file not found" errors)
+
+HOW TO USE:
+-----------
+
+1. Download: okx_wick_detector_FIXED.py
+
+2. Install requirements:
+   pip install websockets
+
+3. Run:
+   python okx_wick_detector_FIXED.py
+
+4. Change symbol (if needed):
+   Open file, find line ~365:
+   detector = OKXWickDetector("BTC-USDT-SWAP")
+   
+   Change to:
+   detector = OKXWickDetector("ETH-USDT-SWAP")
+   detector = OKXWickDetector("SOL-USDT-SWAP")
+   etc.
+
+VALID SYMBOLS:
+--------------
+✅ BTC-USDT-SWAP (Bitcoin perpetual)
+✅ ETH-USDT-SWAP (Ethereum perpetual)
+✅ SOL-USDT-SWAP (Solana perpetual)
+✅ AVAX-USDT-SWAP (Avalanche perpetual)
+✅ MATIC-USDT-SWAP (Polygon perpetual)
+✅ DOGE-USDT-SWAP (Dogecoin perpetual)
+
+NOTE: Always use -SWAP suffix for perpetual contracts!
+
+WHAT TO EXPECT:
+---------------
+
+Console output:
+✅ Database initialized: /path/to/wick_data.db
+⚡ HEALTH CHECK
+✅ WebSocket connection successful
+✅ Subscribed to BTC-USDT-SWAP 1m candles
+✅ Streaming live data...
+
+🔥 WICK | 2025-10-25 12:34:00 | O:67890.5 H:68000.2 L:67850.3 C:67920.1
+   └─ UPPER wick | Upper: 80.1 | Lower: 40.2 | Sequence: 1/5
+
+📊 No wick | 2025-10-25 12:35:00 | O:67920.1 H:67950.5 L:67900.2 C:67940.3
+
+When 5 consecutive wicks detected:
+====================================================================
+🎯 5 CONSECUTIVE WICKS DETECTED!
+====================================================================
+  1. 2025-10-25 12:30:00 | LOWER | Upper: 20.5 | Lower: 85.2
+  2. 2025-10-25 12:31:00 | UPPER | Upper: 90.1 | Lower: 30.4
+  3. 2025-10-25 12:32:00 | LOWER | Upper: 15.3 | Lower: 70.8
+  4. 2025-10-25 12:33:00 | UPPER | Upper: 95.2 | Lower: 25.1
+  5. 2025-10-25 12:34:00 | LOWER | Upper: 10.5 | Lower: 80.3
+====================================================================
+
+DATABASE:
+---------
+All wicks saved to: wick_data.db
+Location: Same directory as script
+Structure: timestamp, symbol, OHLC, wick stats, sequence position
+
+TROUBLESHOOTING:
+----------------
+
+If you still get errors:
+
+1. Check symbol format has -SWAP
+2. Try BTC-USDT-SWAP (most liquid, always works)
+3. Check internet connection
+4. Make sure websockets installed: pip install websockets
+
+NEXT STEPS:
+-----------
+
+Once working, you can:
+• Let it run overnight to build wick database
+• Query database for patterns
+• Compare to your Bookmap untouched levels
+• Add USDT.D correlation logic
+• Build whale-intel MCP integration
